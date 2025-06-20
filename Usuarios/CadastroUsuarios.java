@@ -1,3 +1,4 @@
+package Usuarios;
 
 public class CadastroUsuarios{
     private String NomeCompleto;

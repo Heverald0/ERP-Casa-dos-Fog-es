@@ -1,3 +1,4 @@
+package Usuarios;
 import java.util.Scanner;
 
 public class Main {
@@ -31,9 +32,11 @@ public class Main {
                     System.out.print("Senha: ");
                     String senha = scanner.nextLine();
 
-                    CadastroUsuarios novoUsuario = new CadastroUsuarios(nome, email, dataNasc, senha);
+                    String senhaHash = HashUtils.gerarHash(senha);
+
+                    CadastroUsuarios novoUsuario = new CadastroUsuarios(nome, email, dataNasc, senhaHash);
                     usuarioService.cadastrarUsuario(novoUsuario);
-                    break;
+
 
                 case 2:
                     usuarioService.listarUsuarios();
