@@ -54,6 +54,15 @@ public class Main {
         break;
     }
 
+    System.out.print("CPF (somente números): ");
+    String cpf = scanner.nextLine();
+
+    if (!ValidadorCampos.validarCPF(cpf)) {
+    System.out.println("CPF inválido!");
+    break;
+}
+
+
     System.out.print("Senha (mínimo 6 caracteres): ");
     String senha = scanner.nextLine();
     if (!ValidadorCampos.validarSenhaSimples(senha)) {
@@ -69,7 +78,7 @@ public class Main {
     }
 
     String senhaHash = HashUtils.gerarHash(senha);
-    CadastroUsuarios novoUsuario = new CadastroUsuarios(nome, email, dataFormatada, senhaHash);
+    CadastroUsuarios novoUsuario = new CadastroUsuarios(nome, email, dataFormatada, senhaHash, cpf);
     usuarioService.cadastrarUsuario(novoUsuario);
     break;
 

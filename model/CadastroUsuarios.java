@@ -5,12 +5,14 @@ public class CadastroUsuarios{
     private String EmailCompleto;
     private String SenhaAcesso;
     private String DataNascimento;
+    private String CPFCompleto;
 
-    public CadastroUsuarios(String NomeCompleto, String EmailCompleto, String SenhaAcesso, String DataNascimento){
+    public CadastroUsuarios(String NomeCompleto, String EmailCompleto, String SenhaAcesso, String DataNascimento, String CPFCompleto){
         this.NomeCompleto = NomeCompleto;
         this.EmailCompleto = EmailCompleto;
         this.SenhaAcesso = SenhaAcesso;
         this.DataNascimento = DataNascimento;
+        this.CPFCompleto = CPFCompleto;
     }
 
     public String getNomeCompleto(){
@@ -29,8 +31,12 @@ public class CadastroUsuarios{
         return DataNascimento;
     }
 
+    public String getCPFCompleto(){
+        return CPFCompleto;
+    }
+
     public void ExibirInfos(){
         System.out.println("Nome de usuário: " + getNomeCompleto() + 
-        "\nEmail: " + getEmailCompleto());
+        "\nEmail: " + getEmailCompleto() + "CPF: " + getCPFCompleto());
     }
 }
