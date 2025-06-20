@@ -1,5 +1,7 @@
-package Usuarios;
+package services;
 import java.util.ArrayList;
+
+import model.CadastroUsuarios;
 
 public class UsuarioService {
     private ArrayList<CadastroUsuarios> usuarios = new ArrayList<>();

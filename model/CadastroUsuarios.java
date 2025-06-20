@@ -1,4 +1,4 @@
-package Usuarios;
+package model;
 
 public class CadastroUsuarios{
     private String NomeCompleto;

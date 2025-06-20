@@ -1,5 +1,9 @@
-package Usuarios;
+package main;
 import java.util.Scanner;
+import util.HashUtils;
+
+import model.CadastroUsuarios;
+import services.UsuarioService;
 
 public class Main {
     public static void main(String[] args) {
