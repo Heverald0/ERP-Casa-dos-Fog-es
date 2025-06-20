@@ -31,4 +31,14 @@ public class UsuarioService {
         }
         return null;
     }
+
+    public CadastroUsuarios buscarPorCpf(String cpf) {
+    for (CadastroUsuarios u : usuarios) {
+        if (u.getCPFCompleto().equals(cpf)) {
+            return u;
+        }
+    }
+    return null;
+}
+
 }

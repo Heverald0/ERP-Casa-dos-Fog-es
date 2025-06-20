@@ -6,13 +6,15 @@ public class CadastroUsuarios{
     private String SenhaAcesso;
     private String DataNascimento;
     private String CPFCompleto;
+    private boolean isAdmin;
 
-    public CadastroUsuarios(String NomeCompleto, String EmailCompleto, String SenhaAcesso, String DataNascimento, String CPFCompleto){
+    public CadastroUsuarios(String NomeCompleto, String EmailCompleto, String SenhaAcesso, String DataNascimento, String CPFCompleto, boolean isAdmin){
         this.NomeCompleto = NomeCompleto;
         this.EmailCompleto = EmailCompleto;
         this.SenhaAcesso = SenhaAcesso;
         this.DataNascimento = DataNascimento;
         this.CPFCompleto = CPFCompleto;
+        this.isAdmin = isAdmin;
     }
 
     public String getNomeCompleto(){
@@ -33,6 +35,10 @@ public class CadastroUsuarios{
 
     public String getCPFCompleto(){
         return CPFCompleto;
+    }
+
+    public void setAdmin(boolean isAdmin){
+        this.isAdmin = isAdmin;
     }
 
     public void ExibirInfos(){

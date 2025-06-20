@@ -11,8 +11,9 @@ public class ValidadorCampos {
     }
 
     public static boolean validarSenhaForte(String senha) {
-        return senha != null && senha.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%!]).{8,}$");
-    }
+    return senha != null && senha.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%&*!^_+=.()]).{8,}$");
+}
+
 
     public static boolean validarSenhaSimples(String senha) {
         return senha != null && senha.length() >= 6;
