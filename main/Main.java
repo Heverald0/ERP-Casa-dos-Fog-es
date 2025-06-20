@@ -1,7 +1,8 @@
 package main;
 import java.util.Scanner;
 import util.HashUtils;
-
+import util.ValidadorCampos;
+import util.ValidadorDatas;
 import model.CadastroUsuarios;
 import services.UsuarioService;
 
@@ -24,23 +25,53 @@ public class Main {
 
             switch (opcao) {
                 case 1:
-                    System.out.print("Nome: ");
-                    String nome = scanner.nextLine();
+    System.out.println("=== Cadastro de Usuário ===");
 
-                    System.out.print("Email: ");
-                    String email = scanner.nextLine();
+    System.out.print("Nome: ");
+    String nome = scanner.nextLine();
+    if (!ValidadorCampos.validarNome(nome)) {
+        System.out.println("Nome inválido! Use apenas letras e no mínimo 2 caracteres.");
+        break;
+    }
 
-                    System.out.print("Data de Nascimento (dd/mm/aaaa): ");
-                    String dataNasc = scanner.nextLine();
+    System.out.print("E-mail: ");
+    String email = scanner.nextLine();
+    if (!ValidadorCampos.validarEmail(email)) {
+        System.out.println("E-mail inválido!");
+        break;
+    }
 
-                    System.out.print("Senha: ");
-                    String senha = scanner.nextLine();
+    if (usuarioService.buscarPorEmail(email) != null) {
+        System.out.println("Já existe um usuário com esse e-mail.");
+        break;
+    }
 
-                    String senhaHash = HashUtils.gerarHash(senha);
+    System.out.print("Data de Nascimento (ddMMyyyy ou dd/MM/yyyy): ");
+    String dataDigitada = scanner.nextLine();
+    String dataFormatada = ValidadorDatas.formatarData(dataDigitada);
+    if (dataFormatada == null) {
+        System.out.println("Data inválida ou ano superior a 2025.");
+        break;
+    }
 
-                    CadastroUsuarios novoUsuario = new CadastroUsuarios(nome, email, dataNasc, senhaHash);
-                    usuarioService.cadastrarUsuario(novoUsuario);
+    System.out.print("Senha (mínimo 6 caracteres): ");
+    String senha = scanner.nextLine();
+    if (!ValidadorCampos.validarSenhaSimples(senha)) {
+        System.out.println("Senha fraca! Use pelo menos 6 caracteres.");
+        break;
+    }
 
+    System.out.print("Confirme a senha: ");
+    String confirmarSenha = scanner.nextLine();
+    if (!ValidadorCampos.senhasConferem(senha, confirmarSenha)) {
+        System.out.println("As senhas não coincidem.");
+        break;
+    }
+
+    String senhaHash = HashUtils.gerarHash(senha);
+    CadastroUsuarios novoUsuario = new CadastroUsuarios(nome, email, dataFormatada, senhaHash);
+    usuarioService.cadastrarUsuario(novoUsuario);
+    break;
 
                 case 2:
                     usuarioService.listarUsuarios();
