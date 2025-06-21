@@ -22,6 +22,7 @@ public class Main {
             System.out.println("2 - Listar Usuários");
             System.out.println("3 - Buscar por E-mail");
             System.out.println("4 - Fazer Login");
+            System.out.println("5 - Fazer Logout");
             System.out.println("0 - Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -142,6 +143,18 @@ public class Main {
 
                     } else {
                         System.out.println("E-mail ou senha incorretos.");
+                    }
+                    break;
+                case 5:
+                    if (usuarioLogado != null) {
+                        LoggerSistema.registrarLog(
+                            (usuarioLogado.isAdmin() ? "ADMIN " : "USUÁRIO ") + usuarioLogado.getNomeCompleto(),
+                            "realizou logout"
+                        );
+                        System.out.println("Logout realizado com sucesso. Até logo, " + usuarioLogado.getNomeCompleto() + "!");
+                        usuarioLogado = null;
+                    } else {
+                        System.out.println("Nenhum usuário está logado no momento.");
                     }
                     break;
 
