@@ -70,16 +70,20 @@ public class Main {
         break;
     }
 
-    System.out.print("Confirme a senha: ");
-    String confirmarSenha = scanner.nextLine();
-    if (!ValidadorCampos.senhasConferem(senha, confirmarSenha)) {
-        System.out.println("As senhas não coincidem.");
-        break;
-    }
+System.out.print("Confirme a senha: ");
+String confirmarSenha = scanner.nextLine();
+if (!ValidadorCampos.senhasConferem(senha, confirmarSenha)) {
+    System.out.println("As senhas não coincidem.");
+    break;
+}
 
-    String senhaHash = HashUtils.gerarHash(senha);
-    CadastroUsuarios novoUsuario = new CadastroUsuarios(nome, email, dataFormatada, senhaHash, cpf);
-    usuarioService.cadastrarUsuario(novoUsuario);
+System.out.print("Este usuário será ADMINISTRADOR? (s/n): ");
+String adminInput = scanner.nextLine().trim().toLowerCase();
+boolean isAdmin = adminInput.equals("s");
+
+String senhaHash = HashUtils.gerarHash(senha);
+CadastroUsuarios novoUsuario = new CadastroUsuarios(nome, email, dataFormatada, senhaHash, cpf, isAdmin);
+usuarioService.cadastrarUsuario(novoUsuario);
     break;
 
                 case 2:

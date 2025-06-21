@@ -37,6 +37,10 @@ public class CadastroUsuarios{
         return CPFCompleto;
     }
 
+    public boolean isAdmin(){
+        return isAdmin;
+    }
+
     public void setAdmin(boolean isAdmin){
         this.isAdmin = isAdmin;
     }
