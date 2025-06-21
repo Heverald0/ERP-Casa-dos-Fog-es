@@ -10,6 +10,8 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         UsuarioService usuarioService = new UsuarioService();
+        CadastroUsuarios usuarioLogado = null;
+
 
         int opcao = -1;
 
@@ -18,6 +20,7 @@ public class Main {
             System.out.println("1 - Cadastrar Usuário");
             System.out.println("2 - Listar Usuários");
             System.out.println("3 - Buscar por E-mail");
+            System.out.println("4 - Fazer Login");
             System.out.println("0 - Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -25,14 +28,18 @@ public class Main {
 
             switch (opcao) {
                 case 1:
-    System.out.println("=== Cadastro de Usuário ===");
+                    if (usuarioLogado == null || !usuarioLogado.isAdmin()) {
+                        System.out.println("Apenas administradores logados podem cadastrar novos usuários.");
+                        break;
+                    }
+                    System.out.println("=== Cadastro de Usuário ===");
 
-    System.out.print("Nome: ");
-    String nome = scanner.nextLine();
-    if (!ValidadorCampos.validarNome(nome)) {
-        System.out.println("Nome inválido! Use apenas letras e no mínimo 2 caracteres.");
-        break;
-    }
+                    System.out.print("Nome: ");
+                    String nome = scanner.nextLine();
+                    if (!ValidadorCampos.validarNome(nome)) {
+                        System.out.println("Nome inválido! Use apenas letras e no mínimo 2 caracteres.");
+                        break;
+                    }
 
     System.out.print("E-mail: ");
     String email = scanner.nextLine();
@@ -70,37 +77,64 @@ public class Main {
         break;
     }
 
-System.out.print("Confirme a senha: ");
-String confirmarSenha = scanner.nextLine();
-if (!ValidadorCampos.senhasConferem(senha, confirmarSenha)) {
-    System.out.println("As senhas não coincidem.");
-    break;
-}
+    System.out.print("Confirme a senha: ");
+    String confirmarSenha = scanner.nextLine();
+    if (!ValidadorCampos.senhasConferem(senha, confirmarSenha)) {
+        System.out.println("As senhas não coincidem.");
+        break;
+    }
 
-System.out.print("Este usuário será ADMINISTRADOR? (s/n): ");
-String adminInput = scanner.nextLine().trim().toLowerCase();
-boolean isAdmin = adminInput.equals("s");
+    System.out.print("Este usuário será ADMINISTRADOR? (s/n): ");
+    String adminInput = scanner.nextLine().trim().toLowerCase();
+    boolean isAdmin = adminInput.equals("s");
 
-String senhaHash = HashUtils.gerarHash(senha);
-CadastroUsuarios novoUsuario = new CadastroUsuarios(nome, email, dataFormatada, senhaHash, cpf, isAdmin);
-usuarioService.cadastrarUsuario(novoUsuario);
-    break;
+    String senhaHash = HashUtils.gerarHash(senha);
+    CadastroUsuarios novoUsuario = new CadastroUsuarios(nome, email, dataFormatada, senhaHash, cpf, isAdmin);
+    usuarioService.cadastrarUsuario(novoUsuario);
+        break;
 
                 case 2:
+                    if (usuarioLogado == null) {
+                    System.out.println("Você precisa estar logado para realizar essa ação.");
+                    break;
+}
                     usuarioService.listarUsuarios();
                     break;
 
                 case 3:
-                    System.out.print("Digite o e-mail para busca: ");
-                    String buscaEmail = scanner.nextLine();
-                    CadastroUsuarios encontrado = usuarioService.buscarPorEmail(buscaEmail);
-                    if (encontrado != null) {
-                        System.out.println("---- Usuário encontrado ----");
-                        encontrado.ExibirInfos();
+                    if (usuarioLogado == null) {
+                    System.out.println("Você precisa estar logado para realizar essa ação.");
+                    break;
+                }
+
+                System.out.print("Digite o e-mail para busca: ");
+                String buscaEmail = scanner.nextLine();
+                CadastroUsuarios encontrado = usuarioService.buscarPorEmail(buscaEmail);
+                if (encontrado != null) {
+                    System.out.println("---- Usuário encontrado ----");
+                    encontrado.ExibirInfos();
+                } else {
+                    System.out.println("Usuário não encontrado.");
+                }
+                break;
+
+                case 4:
+                    System.out.println("=== LOGIN ===");
+                    System.out.print("E-mail: ");
+                    String emailLogin = scanner.nextLine();
+
+                    System.out.print("Senha: ");
+                    String senhaLogin = scanner.nextLine();
+
+                    CadastroUsuarios usuario = usuarioService.buscarPorEmail(emailLogin);
+                    if (usuario != null && HashUtils.verificarSenha(senhaLogin, usuario.getSenhaHash())) {
+                        usuarioLogado = usuario;
+                        System.out.println("Login realizado com sucesso! Bem-vindo(a), " + usuarioLogado.getNomeCompleto());
                     } else {
-                        System.out.println("Usuário não encontrado.");
+                        System.out.println("E-mail ou senha incorretos.");
                     }
                     break;
+
 
                 case 0:
                     System.out.println("Saindo do sistema...");

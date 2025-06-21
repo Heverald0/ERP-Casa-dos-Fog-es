@@ -19,5 +19,10 @@ public class HashUtils {
             throw new RuntimeException("Erro ao gerar hash da senha", e);
         }
     }
+
+    public static boolean verificarSenha(String senha, String hashArmazenado) {
+    return gerarHash(senha).equals(hashArmazenado);
+}
+
 }
 

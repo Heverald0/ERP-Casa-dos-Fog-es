@@ -7,6 +7,7 @@ public class CadastroUsuarios{
     private String DataNascimento;
     private String CPFCompleto;
     private boolean isAdmin;
+    private String senhaHash;
 
     public CadastroUsuarios(String NomeCompleto, String EmailCompleto, String SenhaAcesso, String DataNascimento, String CPFCompleto, boolean isAdmin){
         this.NomeCompleto = NomeCompleto;
@@ -37,12 +38,12 @@ public class CadastroUsuarios{
         return CPFCompleto;
     }
 
-    public boolean isAdmin(){
-        return isAdmin;
+     public String getSenhaHash() {
+        return senhaHash;
     }
 
-    public void setAdmin(boolean isAdmin){
-        this.isAdmin = isAdmin;
+    public boolean isAdmin() {
+        return isAdmin;
     }
 
     public void ExibirInfos(){
