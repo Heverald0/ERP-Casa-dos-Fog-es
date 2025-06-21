@@ -1,5 +1,6 @@
 package services;
 import java.util.ArrayList;
+import java.util.List;
 
 import model.CadastroUsuarios;
 
@@ -48,6 +49,10 @@ public boolean excluirUsuario(String email) {
         return true;
     }
     return false;
+}
+
+public List<CadastroUsuarios> getUsuarios() {
+    return usuarios;
 }
 
 }

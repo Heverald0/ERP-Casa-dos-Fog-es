@@ -25,6 +25,7 @@ public class Main {
             System.out.println("5 - Fazer Logout");
             System.out.println("6 - Editar Usuário (Admin)");
             System.out.println("7 - Excluir Usuário (Admin)");
+            System.out.println("8 - Listar apenas administradores");
             System.out.println("0 - Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -210,6 +211,24 @@ public class Main {
                         System.out.println("Usuário não encontrado.");
                     }
                     break;
+
+                    case 8:
+                        if (usuarioLogado == null || !usuarioLogado.isAdmin()) {
+                            System.out.println("Apenas administradores podem acessar esse relatório.");
+                            LoggerSistema.registrarLog("ACESSO NEGADO", "Tentativa de acessar relatório de admins");
+                            break;
+                        }
+
+                        System.out.println("=== Lista de Administradores ===");
+                        for (CadastroUsuarios u : usuarioService.getUsuarios()) {
+                            if (u.isAdmin()) {
+                                System.out.println("- " + u.getNomeCompleto() + " (" + u.getEmailCompleto() + ")");
+                            }
+                        }
+
+                        LoggerSistema.registrarLog("ADMIN " + usuarioLogado.getNomeCompleto(), "acessou o relatório de administradores");
+                        break;
+
 
                 case 0:
                     System.out.println("Saindo do sistema...");
