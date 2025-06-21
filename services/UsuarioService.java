@@ -41,4 +41,13 @@ public class UsuarioService {
     return null;
 }
 
+public boolean excluirUsuario(String email) {
+    CadastroUsuarios usuario = buscarPorEmail(email);
+    if (usuario != null) {
+        usuarios.remove(usuario); // Certifique-se que 'usuarios' é uma lista mutável
+        return true;
+    }
+    return false;
+}
+
 }

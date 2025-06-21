@@ -23,6 +23,8 @@ public class Main {
             System.out.println("3 - Buscar por E-mail");
             System.out.println("4 - Fazer Login");
             System.out.println("5 - Fazer Logout");
+            System.out.println("6 - Editar Usuário (Admin)");
+            System.out.println("7 - Excluir Usuário (Admin)");
             System.out.println("0 - Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -155,6 +157,57 @@ public class Main {
                         usuarioLogado = null;
                     } else {
                         System.out.println("Nenhum usuário está logado no momento.");
+                    }
+                    break;
+                case 6:
+                    if (usuarioLogado == null || !usuarioLogado.isAdmin()) {
+                        System.out.println("Apenas administradores podem editar usuários.");
+                        LoggerSistema.registrarLog("ACESSO NEGADO", "Tentativa de edição sem permissão");
+                        break;
+                    }
+
+                    System.out.print("E-mail do usuário a editar: ");
+                    String emailEdit = scanner.nextLine();
+                    CadastroUsuarios usuarioEditar = usuarioService.buscarPorEmail(emailEdit);
+
+                    if (usuarioEditar == null) {
+                        System.out.println("Usuário não encontrado.");
+                        break;
+                    }
+
+                    System.out.print("Novo nome: ");
+                    String novoNome = scanner.nextLine();
+                    usuarioEditar.setNomeCompleto(novoNome);
+
+                    System.out.print("Nova data de nascimento (ddMMyyyy ou dd/MM/yyyy): ");
+                    String novaData = scanner.nextLine();
+                    String dataFormatadaEdit = ValidadorDatas.formatarData(novaData);
+                    if (dataFormatadaEdit != null) {
+                        usuarioEditar.setDataNascimento(dataFormatadaEdit);
+                    } else {
+                        System.out.println("Data inválida, não foi alterada.");
+                    }
+
+                    System.out.println("Usuário atualizado.");
+                    LoggerSistema.registrarLog("ADMIN " + usuarioLogado.getNomeCompleto(), "editou o usuário " + usuarioEditar.getEmailCompleto());
+                    break;
+
+                    case 7:
+                    if (usuarioLogado == null || !usuarioLogado.isAdmin()) {
+                        System.out.println("Apenas administradores podem excluir usuários.");
+                        LoggerSistema.registrarLog("ACESSO NEGADO", "Tentativa de exclusão sem permissão");
+                        break;
+                    }
+
+                    System.out.print("E-mail do usuário a excluir: ");
+                    String emailDel = scanner.nextLine();
+                    boolean removido = usuarioService.excluirUsuario(emailDel);
+
+                    if (removido) {
+                        System.out.println("Usuário excluído com sucesso.");
+                        LoggerSistema.registrarLog("ADMIN " + usuarioLogado.getNomeCompleto(), "excluiu o usuário " + emailDel);
+                    } else {
+                        System.out.println("Usuário não encontrado.");
                     }
                     break;
 

@@ -22,6 +22,10 @@ public class CadastroUsuarios{
         return NomeCompleto;
     }
 
+    public void setNomeCompleto(String NomeCompleto){
+        this.NomeCompleto = NomeCompleto;
+    }
+
     public String getEmailCompleto(){
         return EmailCompleto;
     }
@@ -32,6 +36,10 @@ public class CadastroUsuarios{
 
     public String getDataNascimento(){
         return DataNascimento;
+    }
+
+    public void setDataNascimento(String DataNascimento){
+        this.DataNascimento = DataNascimento;
     }
 
     public String getCPFCompleto(){
