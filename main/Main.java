@@ -1,6 +1,7 @@
 package main;
 import java.util.Scanner;
 import util.HashUtils;
+import util.LoggerSistema;
 import util.ValidadorCampos;
 import util.ValidadorDatas;
 import model.CadastroUsuarios;
@@ -29,6 +30,7 @@ public class Main {
             switch (opcao) {
                 case 1:
                     if (usuarioLogado == null || !usuarioLogado.isAdmin()) {
+                        LoggerSistema.registrarLog("ACESSO NEGADO", "Usuário tentou acessar cadastro sem permissão");
                         System.out.println("Apenas administradores logados podem cadastrar novos usuários.");
                         break;
                     }
@@ -38,60 +40,63 @@ public class Main {
                     String nome = scanner.nextLine();
                     if (!ValidadorCampos.validarNome(nome)) {
                         System.out.println("Nome inválido! Use apenas letras e no mínimo 2 caracteres.");
+
+                    LoggerSistema.registrarLog("ADMIN " + usuarioLogado.getNomeCompleto(), "cadastrou o usuário " + nome);
+
                         break;
                     }
 
-    System.out.print("E-mail: ");
-    String email = scanner.nextLine();
-    if (!ValidadorCampos.validarEmail(email)) {
-        System.out.println("E-mail inválido!");
-        break;
-    }
+            System.out.print("E-mail: ");
+            String email = scanner.nextLine();
+            if (!ValidadorCampos.validarEmail(email)) {
+                System.out.println("E-mail inválido!");
+                break;
+            }
 
-    if (usuarioService.buscarPorEmail(email) != null) {
-        System.out.println("Já existe um usuário com esse e-mail.");
-        break;
-    }
+            if (usuarioService.buscarPorEmail(email) != null) {
+                System.out.println("Já existe um usuário com esse e-mail.");
+                break;
+            }
 
-    System.out.print("Data de Nascimento (ddMMyyyy ou dd/MM/yyyy): ");
-    String dataDigitada = scanner.nextLine();
-    String dataFormatada = ValidadorDatas.formatarData(dataDigitada);
-    if (dataFormatada == null) {
-        System.out.println("Data inválida ou ano superior a 2025.");
-        break;
-    }
+            System.out.print("Data de Nascimento (ddMMyyyy ou dd/MM/yyyy): ");
+            String dataDigitada = scanner.nextLine();
+            String dataFormatada = ValidadorDatas.formatarData(dataDigitada);
+            if (dataFormatada == null) {
+                System.out.println("Data inválida ou ano superior a 2025.");
+                break;
+            }
 
-    System.out.print("CPF (somente números): ");
-    String cpf = scanner.nextLine();
+            System.out.print("CPF (somente números): ");
+            String cpf = scanner.nextLine();
 
-    if (!ValidadorCampos.validarCPF(cpf)) {
-    System.out.println("CPF inválido!");
-    break;
-}
+            if (!ValidadorCampos.validarCPF(cpf)) {
+            System.out.println("CPF inválido!");
+            break;
+        }
 
 
-    System.out.print("Senha (mínimo 6 caracteres): ");
-    String senha = scanner.nextLine();
-    if (!ValidadorCampos.validarSenhaSimples(senha)) {
-        System.out.println("Senha fraca! Use pelo menos 6 caracteres.");
-        break;
-    }
+            System.out.print("Senha (mínimo 6 caracteres): ");
+            String senha = scanner.nextLine();
+            if (!ValidadorCampos.validarSenhaSimples(senha)) {
+                System.out.println("Senha fraca! Use pelo menos 6 caracteres.");
+                break;
+            }
 
-    System.out.print("Confirme a senha: ");
-    String confirmarSenha = scanner.nextLine();
-    if (!ValidadorCampos.senhasConferem(senha, confirmarSenha)) {
-        System.out.println("As senhas não coincidem.");
-        break;
-    }
+            System.out.print("Confirme a senha: ");
+            String confirmarSenha = scanner.nextLine();
+            if (!ValidadorCampos.senhasConferem(senha, confirmarSenha)) {
+                System.out.println("As senhas não coincidem.");
+                break;
+            }
 
-    System.out.print("Este usuário será ADMINISTRADOR? (s/n): ");
-    String adminInput = scanner.nextLine().trim().toLowerCase();
-    boolean isAdmin = adminInput.equals("s");
+            System.out.print("Este usuário será ADMINISTRADOR? (s/n): ");
+            String adminInput = scanner.nextLine().trim().toLowerCase();
+            boolean isAdmin = adminInput.equals("s");
 
-    String senhaHash = HashUtils.gerarHash(senha);
-    CadastroUsuarios novoUsuario = new CadastroUsuarios(nome, email, dataFormatada, senhaHash, cpf, isAdmin);
-    usuarioService.cadastrarUsuario(novoUsuario);
-        break;
+            String senhaHash = HashUtils.gerarHash(senha);
+            CadastroUsuarios novoUsuario = new CadastroUsuarios(nome, email, dataFormatada, senhaHash, cpf, isAdmin);
+            usuarioService.cadastrarUsuario(novoUsuario);
+                break;
 
                 case 2:
                     if (usuarioLogado == null) {
@@ -99,6 +104,7 @@ public class Main {
                     break;
 }
                     usuarioService.listarUsuarios();
+                    LoggerSistema.registrarLog(usuarioLogado.isAdmin() ? "ADMIN " + usuarioLogado.getNomeCompleto() : "USUÁRIO " + usuarioLogado.getNomeCompleto(), "listou todos os usuários");
                     break;
 
                 case 3:
@@ -130,11 +136,14 @@ public class Main {
                     if (usuario != null && HashUtils.verificarSenha(senhaLogin, usuario.getSenhaHash())) {
                         usuarioLogado = usuario;
                         System.out.println("Login realizado com sucesso! Bem-vindo(a), " + usuarioLogado.getNomeCompleto());
+
+                        String perfil = usuarioLogado.isAdmin() ? "ADMIN" : "USUÁRIO";
+                        LoggerSistema.registrarLog(perfil + " " + usuarioLogado.getNomeCompleto(), "realizou login");
+
                     } else {
                         System.out.println("E-mail ou senha incorretos.");
                     }
                     break;
-
 
                 case 0:
                     System.out.println("Saindo do sistema...");
