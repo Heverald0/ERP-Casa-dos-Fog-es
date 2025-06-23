@@ -14,18 +14,17 @@ public class Main {
 
         String adminEmail = "admin@erp.com";
         if (usuarioService.buscarPorEmail(adminEmail) == null) {
-            String adminNome = "Administrador do Sistema";
+            String adminNome = "Admin";
             String adminData = "01/01/2000";
-            String adminCpf = "00000000000";
-            String adminSenha = "Admin@123";
+            String adminCpf = "078.536.645-83";
+            String adminSenha = "Wizard3.0";
             String senhaHash = HashUtils.gerarHash(adminSenha);
 
             CadastroUsuarios admin = new CadastroUsuarios(adminNome, adminEmail, adminData, senhaHash, adminCpf, true);
             usuarioService.cadastrarUsuario(admin);
-            System.out.println("✅ Administrador padrão criado.");
+            System.out.println("Administrador padrão criado.");
             System.out.println("E-mail: " + adminEmail + " | Senha: " + adminSenha);
         }
-
 
         CadastroUsuarios usuarioLogado = null;
 
