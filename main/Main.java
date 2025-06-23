@@ -11,6 +11,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         UsuarioService usuarioService = new UsuarioService();
+<<<<<<< HEAD
 
         String adminEmail = "admin@erp.com";
         if (usuarioService.buscarPorEmail(adminEmail) == null) {
@@ -26,6 +27,8 @@ public class Main {
             System.out.println("E-mail: " + adminEmail + " | Senha: " + adminSenha);
         }
 
+=======
+>>>>>>> 4c2b3edd48a5dec54551b5acd96b5c813370f52e
         CadastroUsuarios usuarioLogado = null;
 
 
