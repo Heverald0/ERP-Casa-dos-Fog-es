@@ -1,0 +1,1 @@
+[2025-06-23 10:05:34] ACESSO NEGADO Usuário tentou acessar cadastro sem permissão
