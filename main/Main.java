@@ -11,6 +11,22 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         UsuarioService usuarioService = new UsuarioService();
+
+        String adminEmail = "admin@erp.com";
+        if (usuarioService.buscarPorEmail(adminEmail) == null) {
+            String adminNome = "Administrador do Sistema";
+            String adminData = "01/01/2000";
+            String adminCpf = "00000000000";
+            String adminSenha = "Admin@123";
+            String senhaHash = HashUtils.gerarHash(adminSenha);
+
+            CadastroUsuarios admin = new CadastroUsuarios(adminNome, adminEmail, adminData, senhaHash, adminCpf, true);
+            usuarioService.cadastrarUsuario(admin);
+            System.out.println("✅ Administrador padrão criado.");
+            System.out.println("E-mail: " + adminEmail + " | Senha: " + adminSenha);
+        }
+
+
         CadastroUsuarios usuarioLogado = null;
 
 
