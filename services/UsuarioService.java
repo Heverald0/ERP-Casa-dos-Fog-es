@@ -1,58 +1,43 @@
 package services;
-import java.util.ArrayList;
-import java.util.List;
 
+import dao.UsuarioDAO;
+import java.util.List;
 import model.CadastroUsuarios;
 
 public class UsuarioService {
-    private ArrayList<CadastroUsuarios> usuarios = new ArrayList<>();
+    private UsuarioDAO usuarioDAO = new UsuarioDAO();
 
     public void cadastrarUsuario(CadastroUsuarios usuario) {
-        usuarios.add(usuario);
+        usuarioDAO.salvarUsuario(usuario);
         System.out.println("Usuário cadastrado com sucesso!");
     }
 
     public void listarUsuarios() {
-        if (usuarios.isEmpty()) {
+        List<CadastroUsuarios> lista = usuarioDAO.listarTodos();
+
+        if (lista.isEmpty()) {
             System.out.println("Nenhum usuário cadastrado.");
             return;
         }
 
-        for (CadastroUsuarios u : usuarios) {
-            System.out.println("---------------------");
+        for (CadastroUsuarios u : lista) {
             u.ExibirInfos();
         }
     }
 
     public CadastroUsuarios buscarPorEmail(String email) {
-        for (CadastroUsuarios u : usuarios) {
-            if (u.getEmailCompleto().equalsIgnoreCase(email)) {
-                return u;
-            }
-        }
-        return null;
+        return usuarioDAO.buscarPorEmail(email);
     }
 
     public CadastroUsuarios buscarPorCpf(String cpf) {
-    for (CadastroUsuarios u : usuarios) {
-        if (u.getCPFCompleto().equals(cpf)) {
-            return u;
-        }
+        return usuarioDAO.buscarPorCpf(cpf);
     }
-    return null;
-}
 
-public boolean excluirUsuario(String email) {
-    CadastroUsuarios usuario = buscarPorEmail(email);
-    if (usuario != null) {
-        usuarios.remove(usuario); // Certifique-se que 'usuarios' é uma lista mutável
-        return true;
+    public boolean excluirUsuario(String email) {
+        return usuarioDAO.excluirPorEmail(email);
     }
-    return false;
-}
 
-public List<CadastroUsuarios> getUsuarios() {
-    return usuarios;
-}
-
+    public List<CadastroUsuarios> getUsuarios() {
+        return usuarioDAO.listarTodos();
+    }
 }
